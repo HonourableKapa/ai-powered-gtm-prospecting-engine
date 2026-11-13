@@ -1,0 +1,4 @@
+{
+  "_schema_help": "Optional operator-verified evidence records. Copy the schema from gtm_prospecting/evidence.py. Leave records empty if you have none.",
+  "records": []
+}

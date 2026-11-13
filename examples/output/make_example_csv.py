@@ -1,0 +1,64 @@
+"""Writes examples/output/synthetic_example_prospects.csv: three FICTIONAL prospects in the engine's final export format.
+Nothing here describes a real person. Run: python examples/output/make_example_csv.py"""
+import csv
+from pathlib import Path
+
+COLS = ["Rank", "Role", "Name", "X handle", "X profile URL", "Bio", "Expertise category", "Qualification status",
+        "Qualification reason", "Supporting X post URLs", "External research URLs", "Follower count", "Engagement metrics",
+        "Recent activity", "Originality assessment", "Promotional risk", "Confidence level", "Outreach priority",
+        "Personalized outreach opening", "Full personalized outreach message", "Outreach status"]
+
+
+def u(h, i):
+    return f"https://x.com/{h}/status/{i}"
+
+
+ROWS = [
+    [1, "PRIMARY", "Chain Lens (synthetic)", "@synth_chainlens", "https://x.com/synth_chainlens",
+     "Independent onchain analyst. Methods and sources in every post. [self-reported, unverified]", "onchain_analyst",
+     "QUALIFIED (AI-assessed, pending human verification) - PRIMARY #1",
+     "SYNTHETIC EXAMPLE. Publishes original liquidation analysis with sample sizes, windows and a query link, and revises a result "
+     "when it proves sensitive to one outlier block (median delay 41s revised to 29s). Traces fund flows hop by hop with transaction "
+     "hashes. Caveats: the linked query was not opened; the figures are fictional and illustrative only. "
+     "Not yet verified: reproduce one result from the posted query.",
+     " | ".join(u("synth_chainlens", i) for i in ("9000000000000000100", "9000000000000000101", "9000000000000000102")),
+     "https://data.example.invalid/q/123 (not_checked: synthetic)", 1800,
+     "median views 1900; median engagement per view 0.023; flags: none", "6 posts over 20 days; last post 6 days before data collection",
+     "strong: original analysis with stated method, exclusions and self-correction", "low: no promotional or referral content",
+     "high", "LOW",
+     "Hey, read your liquidation breakdown, especially the part where the delay figure moved from 41 to 29 seconds once you reran it.",
+     "Hey, read your liquidation breakdown, especially the part where the delay figure moved from 41 to 29 seconds once you reran it. "
+     "Rare to see the correction posted next to the original. Do you keep the queries public for all your analyses?",
+     "DRAFT_NOT_SENT"],
+    [2, "PRIMARY", "Quant Curve (synthetic)", "@synth_quantcurve", "https://x.com/synth_quantcurve",
+     "Quantitative researcher. Perp funding, volatility, cross-sectional factors. [self-reported, unverified]", "investor_or_market_commentator",
+     "QUALIFIED (AI-assessed, pending human verification) - PRIMARY #2",
+     "SYNTHETIC EXAMPLE. Runs quintile and funding-spread studies with stated sample sizes and cost assumptions, and publicly flags "
+     "when a robustness check flips the sign of an earlier result. Small audience, so qualification rests on the posts, not reach. "
+     "Not yet verified: no code or data was linked.",
+     " | ".join(u("synth_quantcurve", i) for i in ("9000000000000000300", "9000000000000000302")), "", 620,
+     "median views 590; median engagement per view 0.026; flags: LOW_VIEWS", "4 posts over 17 days; last post 8 days before data collection",
+     "strong: original studies with explicit limitations", "none: no promotional content", "medium", "MEDIUM",
+     "Hey, saw the robustness check where dropping the five illiquid contracts flipped the sign. Good to see that flagged as a limitation.",
+     "Hey, saw the robustness check where dropping the five illiquid contracts flipped the sign. Good to see that flagged as a "
+     "limitation. Is the funding-spread work something you publish anywhere beyond X?",
+     "DRAFT_NOT_SENT"],
+    [3, "ALTERNATE", "New Builder (synthetic)", "@synth_newbuilder", "https://x.com/synth_newbuilder",
+     "Solidity dev learning in public. Building a small vault monitor. [self-reported, unverified]", "builder_or_developer",
+     "QUALIFIED (AI-assessed, pending human verification) - ALTERNATE #3 (flagged for spot-check: low confidence)",
+     "SYNTHETIC EXAMPLE. Shows a small, concrete build (a vault monitor with 14 tests and a documented rounding bug) but the evidence "
+     "is thin and the repository was not opened. Qualified at low confidence; verify the repo before any outreach.",
+     " | ".join(u("synth_newbuilder", i) for i in ("9000000000000000400", "9000000000000000401")),
+     "https://code.example.invalid/newbuilder/vault-monitor (not_checked: synthetic)", 40,
+     "median views 90; median engagement per view 0.044; flags: LOW_VIEWS, SMALL_SAMPLE", "3 posts over 13 days",
+     "moderate: own small project, limited depth", "none: no promotional content", "low", "LOW", "", "",
+     "ON_HOLD_LOW_CONFIDENCE (no draft; nothing sent)"],
+]
+
+if __name__ == "__main__":
+    out = Path(__file__).parent / "synthetic_example_prospects.csv"
+    with open(out, "w", newline="", encoding="utf-8-sig") as f:
+        w = csv.writer(f)
+        w.writerow(COLS)
+        w.writerows(ROWS)
+    print("wrote", out)
